@@ -8,21 +8,21 @@ class Person:
 
 
 def create_person_list(people: list) -> list:
-    result = [Person(elem["name"], elem["age"]) for elem in people]
-    for index in range(0, len(people)):
-        if ("wife" in people[index] and people[index]["wife"] is not None
-                and not hasattr(result[index], "wife")):
-            result[index].wife = people[index]["wife"]
-            for elem in result:
-                if elem.name is result[index].wife:
-                    elem.husband = result[index]
-                    result[index].wife = elem
-        elif ("husband" in people[index]
-              and people[index]["husband"] is not None
-              and not hasattr(result[index], "husband")):
-            result[index].husband = people[index]["husband"]
-            for elem in result:
-                if elem.name is result[index].husband:
-                    elem.wife = result[index]
-                    result[index].husband = elem
+    result = []
+    for elem in people:
+        person = Person(elem["name"], elem["age"])
+        if elem.get("wife"):
+            person.wife = elem["wife"]
+        elif elem.get("husband"):
+            person.husband = elem["husband"]
+        result.append(person)
+        person = None
+    for elem1 in result:
+        for elem2 in result:
+            if hasattr(elem1, "wife") and elem1.wife is elem2.name:
+                elem2.husband = elem1
+                elem1.wife = elem2
+            elif hasattr(elem1, "husband") and elem1.husband is elem2.name:
+                elem2.wife = elem1
+                elem1.husband = elem2
     return result
