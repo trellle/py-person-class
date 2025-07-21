@@ -9,11 +9,11 @@ class Person:
 
 def create_person_list(people_data: list) -> list:
     people = [Person(person["name"], person["age"]) for person in people_data]
-    for index in range(0, len(people_data)):
-        wife = people_data[index].get("wife")
+    for elem in people_data:
+        wife = elem.get("wife")
         if wife:
-            people[index].wife = Person.people[wife]
-        husband = people_data[index].get("husband")
+            Person.people[elem.get("name")].wife = Person.people[wife]
+        husband = elem.get("husband")
         if husband:
-            people[index].husband = Person.people[husband]
+            Person.people[elem.get("name")].husband = Person.people[husband]
     return people
